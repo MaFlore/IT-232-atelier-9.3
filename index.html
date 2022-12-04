@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body id="body">
+    <div>
+        <div id="info">
+            Bravo, Vous avez gagné <span id="resultat">0</span> euros
+        </div>
+
+        <div>
+            <form id="form" action="">
+                <input name="button" type="button" onclick="jouer();" value="JOUER">
+            </form>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    function jouer() {
+
+        objet_xml_http_request = new XMLHttpRequest();
+
+        objet_xml_http_request.open('get', 'gainAleatoire.php', true);
+
+        objet_xml_http_request.onreadystatechange = actualiserPage;
+
+        objet_xml_http_request.send(null);
+    }
+
+    function actualiserPage() {
+
+        if (objet_xml_http_request.readyState == 4) {
+
+            if (objet_xml_http_request.status == 200) {
+
+                nouveauGain = objet_xml_http_request.responseText;
+
+                document.getElementById('resultat').innerHTML = nouveauGain;
+
+                document.getElementById('info').style.visibility = "visible";
+            } else {
+
+                document.getElementById('info').innerHTML = "Une erreur s'est produite";
+                /*document.getElementById('info').innerHTML = "Erreur du serveur :" + objet_xml_http_request.status + " - " + objet_xml_http_request.statusText;*/
+                document.getElementById('info').style.visibility = "visible";
+
+                objet_xml_http_request.abort();
+                objet_xml_http_request = null;
+            }
+        }
+    }
+</script>
+
+</html>
